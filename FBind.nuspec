@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>BTools.FBind</id>
+    <version>1.0.10</version>
+    <authors>Andrey Kalinin</authors>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Binding for Windows Forms</description>
+    <projectUrl>https://github.com/KalininAndreyVictorovich/BTools.FBind</projectUrl>
+    <copyright>Unlicense http://unlicense.org</copyright>
+    <tags>Winforms windows forms binding</tags>
+    <licenseUrl>http://unlicense.org/UNLICENSE</licenseUrl>
+  </metadata>
+  <files>
+    <file src="bin\FBind\Release\FBind.dll" target="lib\net40\"/>
+    <file src="bin\FBind\Release\FBind.pdb" target="lib\net40\"/>
+    <file src="bin\FBind\Release\FBind.xml" target="lib\net40\"/>
+  </files>
+</package>

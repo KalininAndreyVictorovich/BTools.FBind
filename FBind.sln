@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBind", "src\FBind\FBind.csproj", "{F9EB09B0-7AF8-44FA-80DF-A0B2EC682FD5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBindTests", "src\FBindTests\FBindTests.csproj", "{FEE39183-3131-4E31-AE8C-5EDBC14F2E4A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{D08253DE-98A0-4B77-A2B3-62A9042F5CA9}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B39753EB-23B6-4071-8388-E2EEAD8685AA}"
+	ProjectSection(SolutionItems) = preProject
+		FBind.nuspec = FBind.nuspec
+		LICENSE = LICENSE
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F9EB09B0-7AF8-44FA-80DF-A0B2EC682FD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9EB09B0-7AF8-44FA-80DF-A0B2EC682FD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9EB09B0-7AF8-44FA-80DF-A0B2EC682FD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9EB09B0-7AF8-44FA-80DF-A0B2EC682FD5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEE39183-3131-4E31-AE8C-5EDBC14F2E4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEE39183-3131-4E31-AE8C-5EDBC14F2E4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEE39183-3131-4E31-AE8C-5EDBC14F2E4A}.Release|Any CPU.ActiveCfg = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

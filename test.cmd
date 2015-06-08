@@ -1,0 +1,1 @@
+msbuild src\FBindTests\FBindTests.csproj /p:Configuration=Debug && packages\xunit.runner.console.2.0.0\tools\xunit.console bin\FBindTests\Debug\FBindTests.dll

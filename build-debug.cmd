@@ -1,0 +1,1 @@
+msbuild src\FBind\FBind.csproj /p:Configuration=Debug
