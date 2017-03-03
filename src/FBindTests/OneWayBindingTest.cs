@@ -257,6 +257,21 @@ namespace BToolsTests
             Assert.Equal(45, destination4.Value);
         }
 
+        [Fact]
+        public void ConvertsEmptyStringToNullOfNullableType()
+        {
+            var source1 = new ContainerInpc<string>();
+            var destination1 = new ContainerInpc<int?>();
+
+            FBinding.BindOneWay(() => source1.Value, () => destination1.Value);
+
+            source1.Value = "42";
+            Assert.Equal(42, destination1.Value);
+
+            source1.Value = "";
+            Assert.Equal(null, destination1.Value);
+        }
+
 
         [Fact]
         public void BindWhenRegister()
