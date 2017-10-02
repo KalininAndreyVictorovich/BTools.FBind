@@ -8,8 +8,13 @@ namespace BTools
 {
     internal static class OneWayBinding<TSource, TDestination>
     {
+        // ReSharper disable StaticMemberInGenericType
+        private static readonly ConstantExpression trueExpression = Expression.Constant(true);
+        private static readonly ConstantExpression nullExpression = Expression.Constant(null);
+        // ReSharper restore StaticMemberInGenericType
+
         public static void BindOneWay(Expression<Func<TSource>> sourceProperty,
-            Expression<Func<TDestination>> destinationProperty, BindingSubHandle bindingHandle, Expression<Func<TSource, TDestination>> converter = null, 
+            Expression<Func<TDestination>> destinationProperty, BindingSubHandle bindingHandle, Expression<Func<TSource, TDestination>> converter = null,
             SynchronizationContext synchronizationContext = null)
         {
             var memberExpression = destinationProperty.Body as MemberExpression;
@@ -27,8 +32,8 @@ namespace BTools
                     typeof (Exception),
                     Expression.Invoke((Expression<Func<TDestination>>)(() => default(TDestination)))));
 
-            var assignExpression = Expression.Assign(memberExpression, getterWithConverterAndGuard);
-            var assignNullExpression = Expression.Assign(memberExpression,
+            var assignExpression = CreateSafeAssignExpression(memberExpression, getterWithConverterAndGuard);
+            var assignNullExpression = CreateSafeAssignExpression(memberExpression,
                 Expression.Convert(Expression.Constant(default(TDestination)), typeof(TDestination)));
 
             var setter = Expression.Lambda<Action>(assignExpression).Compile();
@@ -36,7 +41,7 @@ namespace BTools
 
             var propertyChain = GetPropertyChain(sourceProperty);
 
-            var setterHandler = new SetterHandler(propertyChain.ReversedProperties[0].Name, setter, nullSetter, 
+            var setterHandler = new SetterHandler(propertyChain.ReversedProperties[0].Name, setter, nullSetter,
                 bindingHandle, synchronizationContext);
 
             PropertyChangeHandler handler = setterHandler;
@@ -68,6 +73,31 @@ namespace BTools
                         : default(TDestination);
         }
 
+        private static Expression CreateSafeAssignExpression(MemberExpression left, Expression right)
+        {
+            var notNullCondition = NotNullMemberExpression(left.Expression);
+            var nullGuard = Expression.IfThen(notNullCondition, Expression.Assign(left, right));
+
+            return nullGuard;
+        }
+
+        private static Expression NotNullMemberExpression(Expression expression)
+        {
+            Expression notNullExpression;
+            if (expression.Type.IsValueType)
+            {
+                notNullExpression = trueExpression;
+            }
+            else
+            {
+                notNullExpression = Expression.NotEqual(expression, nullExpression);
+            }
+            var memberExpression = expression as MemberExpression;
+            if (memberExpression == null) return notNullExpression;
+
+            return Expression.AndAlso(NotNullMemberExpression(memberExpression.Expression), notNullExpression);
+        }
+
         private static PropertyChain GetPropertyChain<T>(Expression<Func<T>> sourceProperty)
         {
             var propertyChain = new List<System.Reflection.PropertyInfo>(1);
@@ -96,7 +126,7 @@ namespace BTools
             if (propertyChain.Count < 1 || expression == null)
                 throw new ArgumentException("Please provide a lambda expression like '() => PropertyName.ChildProperty'");
 
-            // Get master object from master object expression. 
+            // Get master object from master object expression.
             var constantExpression = expression as ConstantExpression;
             object root = constantExpression != null
                 ? constantExpression.Value
@@ -173,7 +203,7 @@ namespace BTools
             private readonly SynchronizationContext synchronizationContext;
             private readonly BindingSubHandle bindingHandle;
 
-            public SetterHandler(string propertyName, Action setter, Action nullSetter, BindingSubHandle bindingHandle, 
+            public SetterHandler(string propertyName, Action setter, Action nullSetter, BindingSubHandle bindingHandle,
                 SynchronizationContext synchronizationContext = null)
                 : base(propertyName)
             {

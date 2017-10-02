@@ -173,10 +173,42 @@ namespace BToolsTests
         }
 
         [Fact]
+        public void AssignToNullDoesNotThrow()
+        {
+            var source = new ContainerEvent<string>();
+            var destination = new Container<StructContainer<StringContainer>>();
+
+            FBinding.BindOneWay(() => source.Value, () => destination.Value.Value.StringProperty);
+
+            source.Value = "42";
+
+            Assert.Null(destination.Value.Value);
+        }
+
+        [Fact]
+        public void ChainedAssign()
+        {
+            var source = new ContainerEvent<string>();
+            var destination = new Container<StructContainer<StringContainer>>
+            {
+                Value = new StructContainer<StringContainer>
+                {
+                    Value = new StringContainer()
+                }
+            };
+
+            FBinding.BindOneWay(() => source.Value, () => destination.Value.Value.StringProperty);
+
+            source.Value = "42";
+
+            Assert.Equal("42", destination.Value.Value.StringProperty);
+        }
+
+        [Fact]
         public void StripedChainBindOnParentUpdate()
         {
             // Suppose we have binding ViewModel.User.FirstName -> UserFirstName.Text
-            // After ViewModel.User = new User {FirstName = "John"} 
+            // After ViewModel.User = new User {FirstName = "John"}
             // UserFirstName.Text Should contain "John" even if User do not implement INPC
 
             var source = new ContainerInpc<IContainer<IContainer<int>>>
@@ -292,7 +324,7 @@ namespace BToolsTests
 
             // ReSharper disable once AccessToModifiedClosure
             FBinding.BindOneWay(() => source.Value, () => destination.StringProperty);
-            
+
             var sourceCopy = source;
 
             source = null;
@@ -417,7 +449,7 @@ namespace BToolsTests
 
         private Tuple<WeakReference,WeakReference> MakeUnreferencedBinding()
         {
-            // This moved to separate method to garantee 
+            // This moved to separate method to garantee
             // optimizer not removed cleanup
 
             var source = new ContainerInpc<IContainer<int>> {Value = new ContainerEvent<int> {Value = 42}};
@@ -513,6 +545,11 @@ namespace BToolsTests
                     Thread = Thread.CurrentThread;
                 }
             }
+        }
+
+        private struct StructContainer<T>: IContainer<T>
+        {
+            public T Value { get; set; }
         }
     }
 }
