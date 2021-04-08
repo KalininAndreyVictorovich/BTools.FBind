@@ -4,19 +4,22 @@ using System.Threading;
 
 namespace BTools
 {
+    /// <summary>
+    /// Static class with methods to setup bindings
+    /// </summary>
     public static class FBinding
     {
         /// <summary>
-        /// Setup one way bindind. 
-        /// <see cref="destinationProperty"/> will be set to <see cref="sourceProperty"/> on every property change.
+        /// Setup one way binding.
+        /// <paramref name="destinationProperty"/> will be set to <paramref name="sourceProperty"/> on every property change.
         /// </summary>
         /// <param name="sourceProperty">Source property for subscription</param>
         /// <param name="destinationProperty">Destination property that will be set on every source property change</param>
-        /// <param name="converter">Optional source to destination value converter. 
+        /// <param name="converter">Optional source to destination value converter.
         /// If not provided, System.Convert.ChangeType will be used</param>
-        /// <returns>Unsubscription handle. 
+        /// <returns>Unsubscription handle.
         /// When disposed, all change notification subscriptions in source property chain will be removed.</returns>
-        /// <example> 
+        /// <example>
         /// <code>
         /// partial class SampleForm : System.Windows.Forms.System.Windows.Forms
         /// {
@@ -25,7 +28,7 @@ namespace BTools
         ///         InitializeComponent();
         ///         FBinding.BindOneWay(() => ViewModel.User.BirthDate, () => UserBirthDateLabel.Text, date => date.ToString("d"));
         ///     }
-        /// 
+        ///
         ///     private SampleViewModel viewModel;
         ///     public SampleViewModel ViewModel
         ///     {
@@ -42,7 +45,7 @@ namespace BTools
         /// </example>
         /// <remarks>
         /// <para>
-        /// Change notification subscriptions is done for every object in the property chain. In the exaple above 
+        /// Change notification subscriptions is done for every object in the property chain. In the exaple above
         /// UserBirthDateLabel.Text will be updated when User property of ViewModel of ViewModel of this will change.
         /// </para>
         /// <para>
@@ -65,17 +68,17 @@ namespace BTools
         }
 
         /// <summary>
-        /// Setup one way bindind. 
-        /// <see cref="destinationProperty"/> will be set to <see cref="sourceProperty"/> on every property change. 
+        /// Setup one way bindind.
+        /// <paramref name="destinationProperty"/> will be set to <paramref name="sourceProperty"/> on every property change.
         /// Assigned will be performed in <see cref="SynchronizationContext"/> captured on this method call.
         /// </summary>
         /// <param name="sourceProperty">Source property for subscription</param>
         /// <param name="destinationProperty">Destination property that will be set on every source property change</param>
-        /// <param name="converter">Optional source to destination value converter. 
+        /// <param name="converter">Optional source to destination value converter.
         /// If not provided, System.Convert.ChangeType will be used</param>
-        /// <returns>Unsubscription handle. 
+        /// <returns>Unsubscription handle.
         /// When disposed, all change notification subscriptions in source property chain will be removed.</returns>
-        /// <example> 
+        /// <example>
         /// <code>
         /// partial class SampleForm : System.Windows.Forms.System.Windows.Forms
         /// {
@@ -84,7 +87,7 @@ namespace BTools
         ///         InitializeComponent();
         ///         FBinding.BindOneWaySync(() => ViewModel.User.BirthDate, () => UserBirthDateLabel.Text, date => date.ToString("d"));
         ///     }
-        /// 
+        ///
         ///     private SampleViewModel viewModel;
         ///     public SampleViewModel ViewModel
         ///     {
@@ -101,7 +104,7 @@ namespace BTools
         /// </example>
         /// <remarks>
         /// <para>
-        /// Change notification subscriptions is done for every object in the property chain. In the exaple above 
+        /// Change notification subscriptions is done for every object in the property chain. In the exaple above
         /// UserBirthDateLabel.Text will be updated when User property of ViewModel of ViewModel of this will change.
         /// </para>
         /// <para>
@@ -111,7 +114,7 @@ namespace BTools
         /// </remarks>
         public static IDisposable BindOneWaySync<TSource, TDestination>(
             Expression<Func<TSource>> sourceProperty,
-            Expression<Func<TDestination>> destinationProperty, 
+            Expression<Func<TDestination>> destinationProperty,
             Expression<Func<TSource, TDestination>> converter = null)
         {
             if (sourceProperty == null) throw new ArgumentNullException(nameof(sourceProperty));
