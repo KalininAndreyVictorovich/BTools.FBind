@@ -284,7 +284,7 @@ namespace BToolsTests
             source4.Value = 45;
 
             Assert.Equal(42, destination1.Value);
-            Assert.Equal(null, destination2.Value);
+            Assert.Null(destination2.Value);
             Assert.Equal(43, destination3.Value);
             Assert.Equal(45, destination4.Value);
         }
@@ -301,7 +301,7 @@ namespace BToolsTests
             Assert.Equal(42, destination1.Value);
 
             source1.Value = "";
-            Assert.Equal(null, destination1.Value);
+            Assert.Null(destination1.Value);
         }
 
 
